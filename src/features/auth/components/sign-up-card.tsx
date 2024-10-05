@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 
@@ -18,6 +19,10 @@ interface SignUpCardProps {
 }
 
 export const SignUpCard = ({ setState }: SignUpCardProps) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
   return (
     <Card className="w-full h-full p-8">
       <CardHeader className="pt-0 px-0">
@@ -30,24 +35,24 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
             disabled={false}
             type="email"
             placeholder="Email"
-            value=""
-            onChange={() => {}}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
           <Input
             disabled={false}
             type="password"
             placeholder="Password"
-            value=""
-            onChange={() => {}}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             required
           />
           <Input
             disabled={false}
             type="password"
             placeholder="Confirm password"
-            value=""
-            onChange={() => {}}
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
           <Button type="submit" className="w-full" size="lg" disabled={false}>
