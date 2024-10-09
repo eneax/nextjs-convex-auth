@@ -19,12 +19,15 @@ interface SignInCardProps {
 }
 
 export const SignInCard = ({ setState }: SignInCardProps) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const { signIn } = useAuthActions();
 
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const handleProviderSignIn = (value: "github") => {
-    signIn(value);
+    setLoading(true);
+    signIn(value).finally(() => setLoading(false));
   };
 
   return (
@@ -36,7 +39,7 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
       <CardContent className="px-0 pb-0 space-y-5">
         <form className="space-y-2.5">
           <Input
-            disabled={false}
+            disabled={loading}
             type="email"
             placeholder="Email"
             value={email}
@@ -44,14 +47,14 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
             required
           />
           <Input
-            disabled={false}
+            disabled={loading}
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <Button type="submit" className="w-full" size="lg" disabled={false}>
+          <Button type="submit" className="w-full" size="lg" disabled={loading}>
             Continue
           </Button>
         </form>
@@ -60,7 +63,7 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
 
         <div className="flex flex-col gap-y-2.5">
           <Button
-            disabled={false}
+            disabled={loading}
             variant="outline"
             onClick={() => handleProviderSignIn("github")}
             size="lg"
