@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 
 import { Button } from "@/components/ui/button";
@@ -63,16 +62,6 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
         <Separator />
 
         <div className="flex flex-col gap-y-2.5">
-          <Button
-            disabled={false}
-            variant="outline"
-            onClick={() => {}}
-            size="lg"
-            className="w-full relative"
-          >
-            <FcGoogle className="size-5 absolute top-3 left-2.5" />
-            Continue with Google
-          </Button>
           <Button
             disabled={false}
             variant="outline"
