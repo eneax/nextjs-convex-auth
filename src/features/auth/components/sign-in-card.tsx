@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { FaGithub } from "react-icons/fa";
+import { TriangleAlert } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -23,7 +24,18 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const handlePasswordSignIn = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    signIn("password", { email, password, flow: "signIn" })
+      .catch(() => {
+        setError("Invalid email or password");
+      })
+      .finally(() => setLoading(false));
+  };
 
   const handleProviderSignIn = (value: "github") => {
     setLoading(true);
@@ -36,8 +48,14 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
         <CardTitle>Login to continue</CardTitle>
         <CardDescription>Use your email or another service</CardDescription>
       </CardHeader>
+      {!!error && (
+        <div className="bg-destructive/15 p-3 rounded-md flex items-center gap-x-2 text-sm text-destructive mb-6">
+          <TriangleAlert className="size-4" />
+          <p>{error}</p>
+        </div>
+      )}
       <CardContent className="px-0 pb-0 space-y-5">
-        <form className="space-y-2.5">
+        <form onSubmit={handlePasswordSignIn} className="space-y-2.5">
           <Input
             disabled={loading}
             type="email"
