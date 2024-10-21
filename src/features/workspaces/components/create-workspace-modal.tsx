@@ -1,7 +1,9 @@
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -9,14 +11,32 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 import { useCreateWorkspaceModal } from "../store/use-create-workspace-modal";
+import { useCreateWorkspace } from "../api/use-create-workspace";
 
 export const CreateWorkspaceModal = () => {
+  const router = useRouter();
+  const [name, setName] = useState("");
   const [open, setOpen] = useCreateWorkspaceModal();
+
+  const { mutate, isLoading } = useCreateWorkspace();
 
   const handleClose = () => {
     setOpen(false);
+    setName("");
+  };
 
-    // TODO: clear the form
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    mutate(
+      { name },
+      {
+        onSuccess(id) {
+          router.push(`/workspace/${id}`);
+          handleClose();
+        },
+      }
+    );
   };
 
   return (
@@ -24,22 +44,20 @@ export const CreateWorkspaceModal = () => {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Create a workspace</DialogTitle>
-          <DialogDescription>
-            Create a workspace to get started.
-          </DialogDescription>
         </DialogHeader>
 
-        <form className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <Input
-            disabled={false}
+            disabled={isLoading}
             placeholder="Workspace name (e.g. 'Work', 'Personal', etc.)"
             minLength={3}
-            value=""
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             autoFocus
             required
           />
           <div className="flex justify-end">
-            <Button disabled={false}>Create</Button>
+            <Button disabled={isLoading}>Create</Button>
           </div>
         </form>
       </DialogContent>
