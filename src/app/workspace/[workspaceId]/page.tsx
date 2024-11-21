@@ -1,7 +1,9 @@
-interface PageProps {
-  params: { workspaceId: string };
-}
+"use client";
 
-export default function WorkspaceIdPage({ params }: PageProps) {
-  return <div>Workspace ID: {params.workspaceId}</div>;
+import { useWorkspaceId } from "@/hooks/use-workspace-id";
+
+export default function WorkspaceIdPage() {
+  const workspaceId = useWorkspaceId();
+
+  return <div>Workspace ID: {workspaceId}</div>;
 }
